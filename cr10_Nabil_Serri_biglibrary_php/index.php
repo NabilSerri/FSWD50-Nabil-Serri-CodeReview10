@@ -1,6 +1,19 @@
 <?php require_once 'actions/db_connect.php'; ?>
 
- 
+ <?php
+ob_start();
+session_start();
+
+
+// if session is not set this will redirect to login page
+if( !isset($_SESSION['user']) ) {
+ header("Location: start.php");
+ exit;
+}
+// select logged-in users details
+$res=mysqli_query($connect, "SELECT * FROM users WHERE userId=".$_SESSION['user']);
+$userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
+?>
 
 <!DOCTYPE html>
 
@@ -23,12 +36,12 @@
                 <div class="container">
                     
                 
-                <a class="navbar-brand text-warning" href="#">CodeReview 10</a>
+                <a class="navbar-brand text-warning" href="index.php">CodeReview 10</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <div class="collapse navbar-collapse" id="navbarsExample04">
                 <ul class="navbar-nav mr-auto">
                     <!-- <li class="nav-item active">
                                   <a class="nav-link btn btn-outline-warning" href="#" data-toggle="modal" data-target="#exampleModalCenter4"> Add New Book <span class="sr-only">(current)</span></a>
@@ -41,15 +54,28 @@
                     </button>
                 </a>
                 </ul>
-                <form class="form-inline my-2 my-md-0">
-          
-                </form>
+                
+                
+                <!-- <a href="log_in.php">
+                    <button type="button" class="btn btn-outline-warning">
+                        log in
+                    </button>
+                </a> -->
+                <!-- <a href="register.php">
+                    <button type="button" class="btn btn-outline-warning">
+                        register
+                    </button>
+                </a> -->
+                <!-- </div> -->
             </div>
             </div>
             </nav>
-        </div>
-    </div>
+            </div>
+            </div>
             <div id="hero" class="container">
+                <h5 class="text-right text-sucsses"> Hi <?php echo $userRow['userName']; ?>
+            
+           <a href="logout.php?logout">Sign Out</a></h5>
                 <div class="row mb-2">
 
 
@@ -66,8 +92,9 @@
                 if($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()){
                 
-                
+
             /*echo $key["Author_name"]."<br>";*/
+            $desc = $row["short_description"];
             echo '
             <div class="col-md-6 my-4">
                 <div class="card flex-md-row mb-4 shadow-sm h-md-250">
@@ -182,13 +209,18 @@
              </div>
          </div>
 
+
+          
+  
+        
+  
+
+<?php ob_end_flush(); ?>
+
         
 
 
 
  
 
-</body>
-
-</html>
 

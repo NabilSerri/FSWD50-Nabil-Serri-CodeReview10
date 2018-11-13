@@ -1,3 +1,8 @@
+<?php require_once 'actions/db_connect.php'; ?>
+
+ <?php
+            
+?>
 <!DOCTYPE html>
 
 <html>
@@ -21,12 +26,12 @@
                 <div class="container">
                     
                 
-                <a class="navbar-brand text-warning" href="#">CodeReview 10</a>
+                <a class="navbar-brand text-warning" href="index.php">CodeReview 10</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <div class="collapse navbar-collapse" id="navbarsExample04">
                 <ul class="navbar-nav mr-auto">
                     <!-- <li class="nav-item active">
                                   <a class="nav-link btn btn-outline-warning" href="#" data-toggle="modal" data-target="#exampleModalCenter4"> Add New Book <span class="sr-only">(current)</span></a>
@@ -45,7 +50,7 @@
         <div class="container">
           
        
-    <form action="actions/a_create.php" method="post" class="my-4">
+        <form action="actions/a_create.php" method="post" class="my-4">
               <div class="form-group">
                 <label for="exampleInputEmail1">ISBN code:</label>
                 <input type="text"
@@ -95,7 +100,46 @@
                 <option value="not_available">not available</option>
               </select>
               </div>
-            
+              <div class="form-group">
+                <label for="exampleInputEmail1">Authors:</label>
+                <select class="custom-select" name="fk_Authors">
+              <?php 
+              $sql = "
+              select * from media
+              INNER JOIN `authors` on  media.fk_Authors = authors.Author_id 
+              INNER JOIN publisher on  media.fk_Publisher=publisher.Publisher_id
+              "
+            ;
+            $result = $connect->query($sql);
+            if($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()){
+                 print( "
+
+              <option value='".$row["fk_Authors"]."'>".$row['Author_name']."</option>"
+
+              );
+             }
+              }
+                ?>
+              </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Publisher:</label>
+
+                <select class="custom-select mb-4" name="fk_Publisher">
+                <?php 
+                $result2 = $connect->query($sql);
+
+                if($result2->num_rows > 0) {
+                while($row = $result2->fetch_assoc()){ 
+                  print(
+                "<option value='".$row["fk_Publisher"]."'>".$row["Publisher_name"]."</option>"
+              );
+              }}
+                ?>
+              </select>
+               
+               
               <button type="submit" class=" btn btn-warning">
                 Insert user
               </button>
@@ -108,11 +152,6 @@
             </form> 
 
   </div>
-
-
- 
-
 </body>
-
 </html>
 

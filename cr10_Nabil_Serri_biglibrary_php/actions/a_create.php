@@ -9,6 +9,10 @@ if($_POST) {
     $short_description =$_POST['short_description'];
     $type =$_POST['type'];
     $status =$_POST['status'];
+    $type =$_POST['type'];
+    $status =$_POST['status'];
+    $fk_Authors=$_POST['fk_Authors'];
+    $fk_Publisher=$_POST['fk_Publisher'];
 
     $sql = "INSERT INTO media (
             ISBN_code,
@@ -26,8 +30,8 @@ if($_POST) {
             '$short_description',
             '$type',
             '$status',
-            5,
-            5
+            $fk_Authors,
+            $fk_Publisher
             )";
             
     if($connect->query($sql) === TRUE) {
@@ -44,13 +48,13 @@ if($_POST) {
         ;
         echo "<h1 class='text-center text-danger'>New Record Successfully Created</h1>";
         echo "<div class=' text-center container'>";
-        echo "<a href='../create.php'>
-                <button type='button'class='btn btn-warning m-1'>
+        echo "<a href='../create.php' style='text-decoration:none'>
+                <button type='button' class='btn btn-warning m-1'>
                     Back
                 </button>
-            </a>";
+                </a>";
 
-        echo "<a href='../index.php'><button type='button'class='btn btn-warning m-1'>Home</button></a>";
+        echo "<a href='../index.php'><button type='button' class='btn btn-warning m-1'>Home</button></a>";
         echo'</div></body>
 
             </html>';

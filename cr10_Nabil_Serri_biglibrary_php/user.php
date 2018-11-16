@@ -4,13 +4,15 @@
 ob_start();
 session_start();
 
-if( !isset($_SESSION['admin']) ) {
+
+// if session is not set this will redirect to login page
+if( !isset($_SESSION['user']) ) {
  header("Location: start.php");
- 
  exit;
 }
 
-$res=mysqli_query($connect, "SELECT * FROM users WHERE userId=".$_SESSION['admin']);
+// select logged-in users details
+$res=mysqli_query($connect, "SELECT * FROM users WHERE userId=".$_SESSION['user']);
 $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
 
 ?>
@@ -48,11 +50,11 @@ $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
                                   
                 </li>
                  -->
-                 <a href="create.php">
+                 <!-- <a href="create.php">
                     <button type="button" class="btn btn-outline-warning">
                         Add New Book
                     </button>
-                </a>
+                                 </a> -->
                 </ul>
                 
                 
@@ -87,13 +89,12 @@ $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
             INNER JOIN publisher on  media.fk_Publisher=publisher.Publisher_id
             "
             ;
-           
+            
                 $result = $connect->query($sql);
                 $i=0;
                 if($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()){
                 
-
             /*echo $key["Author_name"]."<br>";*/
             $desc = $row["short_description"];
             echo '
@@ -185,12 +186,7 @@ $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
     <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="'.$row["image"].'" data-holder-rendered="true" style="width: 240px; height: 320px;">
 
     </div>
-    <a href="update.php?Media_id='.$row['Media_id'].'">
-    <button type="button" class="btn btn-outline-warning">Edit</button></a>
-
-    <a href="delete.php?Media_id='.$row['Media_id'].'"">
-    <button type="button" class="btn btn-outline-warning">Delete</button>
-    </a>
+    
     </div>
     
 

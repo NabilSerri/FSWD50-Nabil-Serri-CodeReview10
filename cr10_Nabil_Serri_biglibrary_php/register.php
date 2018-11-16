@@ -4,6 +4,18 @@ session_start(); // start a new session or continues the previous
 /*if( isset($_SESSION['user'])!="" ){
  header("Location: index.php"); // redirects to home.php
 }*/
+if( isset($_SESSION['user']) ) {
+ header("Location: user.php");
+ 
+ exit;
+}
+if( isset($_SESSION['admin']) ) {
+ header("Location: index.php");
+ 
+ exit;
+}
+
+
 include_once 'actions/db_connect.php';
 $error = false;
 $nameError="";
@@ -83,6 +95,11 @@ $password = hash('sha256', $pass);
    unset($name);
    unset($email);
    unset($pass);
+   $nameError="";
+    $emailError="";
+    $passError="";
+    $name="";
+    $email="";
   } else {
    $errTyp = "danger";
    $errMSG = "Something went wrong, try again later...";
@@ -120,11 +137,11 @@ $password = hash('sha256', $pass);
                                   
                 </li>
                  -->
-                 <a href="create.php">
+                 <!-- <a href="create.php">
                     <button type="button" class="btn btn-outline-warning">
                         Add New Book
                     </button>
-                </a>
+                                 </a> -->
                 </ul>
                 <div class="my-2 my-md-0">
                 <a href="log_in.php">

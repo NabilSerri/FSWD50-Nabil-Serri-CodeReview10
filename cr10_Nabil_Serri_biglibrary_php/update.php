@@ -1,5 +1,8 @@
 <?php
 
+ ob_start();
+session_start();
+
  
 
 require_once 'actions/db_connect.php';
@@ -151,6 +154,6 @@ if($_GET['Media_id']) {
 <?php
 
 }
-
+ob_end_flush(); 
 ?>
 

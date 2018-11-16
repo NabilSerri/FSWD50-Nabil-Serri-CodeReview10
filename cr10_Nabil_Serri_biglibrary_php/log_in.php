@@ -10,8 +10,15 @@ $name="";
 $email="";
 
 // it will never let you open index(login) page if session is set
-if ( isset($_SESSION['user'])!="" ) {
+
+if( isset($_SESSION['user']) ) {
+ header("Location: user.php");
+ 
+ exit;
+}
+if( isset($_SESSION['admin']) ) {
  header("Location: index.php");
+ 
  exit;
 }
 
@@ -47,13 +54,21 @@ if( isset($_POST['btn-login']) ) {
   
   $password = hash('sha256', $pass); // password hashing
 
-  $res=mysqli_query($connect, "SELECT userId, userName, userPass FROM users WHERE userEmail='$email'");
-  $row=mysqli_fetch_array($res, MYSQLI_ASSOC);
-  $count = mysqli_num_rows($res); // if uname/pass is correct it returns must be 1 row
+  $res=mysqli_query($connect, "SELECT userId, userName, userPass, rule FROM users WHERE userEmail='$email'");
+  $row=mysqli_fetch_array($res, MYSQLI_ASSOC);// $res->fetch_all(MYSQLI_ASSOC)
+  $count = mysqli_num_rows($res); // if uname/pass is correct it returns must be 1 row 
+  //mysqli_num_rows() it will give you how many row you have in your result 
   
   if( $count == 1 && $row['userPass']==$password ) {
-   $_SESSION['user'] = $row['userId'];
-   header("Location: index.php");
+    //$_SESSION['user'] = $row['userId'];
+    
+    if ($row["rule"] == "admin") {
+      $_SESSION['admin']=$row['userId'];
+      header("Location: index.php");
+    }else{
+      $_SESSION['user']=$row['userId'];
+      header("Location: user.php");
+    }
   } else {
    $errMSG = "Incorrect Credentials, Try again...";
   }
@@ -90,11 +105,11 @@ if( isset($_POST['btn-login']) ) {
                                   
                 </li>
                  -->
-                 <a href="create.php">
+                 <!-- <a href="create.php">
                     <button type="button" class="btn btn-outline-warning">
                         Add New Book
                     </button>
-                </a>
+                                 </a> -->
                 </ul>
                 <div class="my-2 my-md-0">
                 

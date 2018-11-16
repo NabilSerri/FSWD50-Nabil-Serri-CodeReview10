@@ -1,7 +1,19 @@
 <?php require_once 'actions/db_connect.php'; ?>
 
  <?php
-            
+      session_start(); 
+/*if( isset($_SESSION['user']) ) {
+ header("Location: user.php");
+ 
+ exit;
+}
+if( isset($_SESSION['admin']) ) {
+ header("Location: index.php");*/
+ 
+ /*exit;
+}*/
+
+    
 ?>
 <!DOCTYPE html>
 
